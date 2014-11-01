@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# root of all movies
+ROOT="/media/movies_box/toConvert"
+# every DVDs video files will be in a video_ts folder
+VIDEO="/VIDEO_TS" #not needed...
+# where the dvd will end up
+ENCODED="/media/movies_box/converted"
+
+dirs=`ls $ROOT`
+
+for dir in $dirs
+do
+CURRENT=/$dir
+
+mkdir $ENCODED$CURRENT
+echo "Encoding..." $ROOT$CURRENT " to " $ENCODED$CURRENT$CURRENT".mp4"
+
+HandBrakeCLI -i $ROOT$CURRENT -o $ENCODED$CURRENT$CURRENT.m4v -e x264 -q 20 -B 160 --x264-preset medium --h264-profile high --h264-level 4.1
+
+echo "Done, removing source"
+
+chmod -R 777 $ROOT$CURRENT
+rm -rf $ROOT$CURRENT
+
+echo "Really done this time"
+
+done

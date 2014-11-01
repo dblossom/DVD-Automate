@@ -1,0 +1,38 @@
+#!/bin/bash
+# script copy_DVD
+# to copy files from dvd rom to a folder with the
+# same name as the DVD Title
+# D. Blossom
+
+# the dvd drive
+SRC="/media/"
+
+# the root folder we want the file
+DEST="/media/movies_box/toConvert/"
+
+# the "video_ts" file we want to copy from disk
+VIDEO="/VIDEO_TS"
+
+# the title of disk extracted
+TITLE=$(blkid -o value -s LABEL /dev/sr0)
+
+# put it all together to get the "local" source
+SRC=$SRC$TITLE$VIDEO
+
+# replace spaces with _ for title
+TITLE=${TITLE// /_}
+
+# where we will put it
+DEST=$DEST$TITLE
+
+# just so we know where stuff is going
+echo "Copying" $SRC " to " $DEST
+
+# actually copy from DVD to Local Drive
+cp -rf  "$SRC" "$DEST"
+
+# copy is finished.
+echo "Done!"
+
+# eject the disk
+eject /dev/sr0
